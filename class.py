@@ -123,9 +123,6 @@ def VerifyIsNumOrStr(word):
 def MainFunctionVerify(word):
     if VerifyComment(word):
         return
-    elif VerifyHaveSpace(word):
-        # colocar em array de erro
-        return
     elif VerifyReservedWord(word):
         return
     elif VerifyIdentifier(word):
@@ -134,10 +131,9 @@ def MainFunctionVerify(word):
         return
     elif VerifyIsNumInt(word):
         return
-    # elif VerifyIsNumOrStr(word):
-    #     return
     else:
-        print(f"{word} não reconhecido")
+        print(f"{word} -> Erro no reconhecimento")
+        return
         
 
 palavra = 'char'
