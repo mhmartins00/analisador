@@ -1,5 +1,4 @@
 
-from xml.dom.pulldom import CHARACTERS
 
 # Identificadores iniciados por letras e podem continur com números ou letras
 # Constantes numéricas inteiras "int" até 99
@@ -14,12 +13,15 @@ from xml.dom.pulldom import CHARACTERS
 # Lista das linhas onde os erros aparecem, junto com as palavras
 
 
+from xml.dom.minidom import Identified
+
+
 def VerifyHaveSpace(word): 
     if ' ' in word:
-        print("A palavra possui espaco")
+        # print("A palavra possui espaco")
         return bool(1)
     else:
-        print("A palavra não tem espaço")
+        # print("A palavra não tem espaço")
         return bool(0)
 
 
@@ -27,23 +29,23 @@ def VerifyComment(word): #Corrigir: Se o primeiro caracter da string for um espa
     first = word[0]
     if first == '/':
         if word[1] == first:
-            print("Este trecho é um comentário")
+            # print("Este trecho é um comentário")
             return bool(1)
         else:
-            print("Este trecho possui apenas uma '/' ou possui espaco entre as '/' ")
+            # print("Este trecho possui apenas uma '/' ou possui espaco entre as '/' ")
             return bool(0)
     else:
-        print("Este trecho não é um comentario")
+        # print("Este trecho não é um comentario")
         return bool(0)
 
 
 def VerifyReservedWord(word): #Corrigir: Se houver espaço no inicio ou no fim da palavra considera-se não reservada
     reservedWords = ['int', 'double', 'float', 'real', 'break', 'case','char', 'const', 'continue']
     if word in reservedWords:
-        print("Essa é uma palavra reservada")
+        # print("Essa é uma palavra reservada")
         return bool(1)
     else:
-        print("Essa não é uma palavra reservada")
+        # print("Essa não é uma palavra reservada")
         return bool(0)
 
 
@@ -55,51 +57,59 @@ def VerifyNumFloat(word):
         # print(f"Esta é a posição do ponto: {position}")
         tmp = len(word[position:position+3])
         if tmp < 3:
-            print("Este número real não possui duas casas decimais")
+            # print("Este número real não possui duas casas decimais")
             return bool(0)
         else:
             if VerifyIsNumOrStr(word) == float:
-                print("A"*50)
                 word = float(word)
                 if word <= limit:
-                    print("Este número real é aceito")
+                    # print("Este número real é aceito")
                     return bool(1)
                 else:
-                    print("Este número real não é aceito")
+                    # print("Este número real não é aceito")
                     return bool(0)
             else:
-                print("Este número real não é aceito")
+                # print("Este número real não é aceito")
                 return bool(0)
     else:
-        print("Este número possui mais que duas casas decimais")
+        # print("Este número possui mais que duas casas decimais")
         return bool(0)
  
 
 def VerifyIdentifier(word):
     first = word[0]
     numbers = ['0','1','2','3','4','5','6','7','8','9'] 
+    special_characters = [".",'"',"'",'!','@', '#', '$', '%', '¨', '&', '*', "(", ')', '[', ']', '{','}', '+', '-', '=','´', '`', ',','<', '>', ';', ':','/','?', '^', '~', "|", ]
+    for i in word:
+        if i in special_characters:
+            return bool(0)
     if first in numbers:
-        print(f"{word} não é um identificador valido 88")
+        # print(f"{word} não é um identificador valido 88")
         return bool(0)
+    # elif word.__contains__(".", "L"):
+    #     return bool(0)
     else:
         if VerifyReservedWord(word) == False and VerifyHaveSpace(word) == False:
-            print(f"{word} é um identificador válido")
+            # print(f"{word} é um identificador válido")
             return bool(1)
         else:
-            print(f"{word} não é um identificador valido 99")
+            # print(f"{word} não é um identificador valido 99")
             return bool(0)
 
 
 def VerifyIsNumInt(word):
     limit=99
     size = len(word)
-    word = int(word)
-    if size <= 2:
-        if word <= limit:
-            print("Este número inteiro é aceito")
-            return bool(1)
+    if VerifyIsNumOrStr(word) == int:
+        word = int(word)
+        if size <= 2:
+            if word <= limit:
+                # print("Este número inteiro é aceito")
+                return bool(1)
+            else:
+                # print("Este número inteiro não é aceito")
+                return bool(0)
         else:
-            print("Este número inteiro não é aceito")
             return bool(0)
     else:
         return bool(0)
@@ -108,37 +118,77 @@ def VerifyIsNumInt(word):
 def VerifyIsNumOrStr(word):
     if word.isdigit() == True:
         wordt=int(word)
-        print(f"{word} é um número inteiro")
+        # print(f"{word} é um número inteiro")
         return type(wordt)
     else:
         try:
             wordt=float(word)
-            print(f"{word} é um numero float")
+            # print(f"{word} é um numero float")
             return type(wordt)
         except ValueError:
-            print(f"{word} é uma string")
+            # print(f"{word} é uma string")
             return type(word)
 
 
-def MainFunctionVerify(word):
+def MainFunctionVerify(word, num):
     if VerifyComment(word):
-        return
+        tkn = ("comment")
+        return tkn
     elif VerifyReservedWord(word):
-        return
+        tkn = ("reserved")
+        return tkn
     elif VerifyIdentifier(word):
-        return
+        tkn = ("identify")
+        return tkn
     elif VerifyNumFloat(word):
-        return
+        tkn = ("real")
+        return tkn
     elif VerifyIsNumInt(word):
-        return
+        tkn = ("int")
+        return tkn
     else:
-        print(f"{word} -> Erro no reconhecimento")
-        return
+        tkn = ("error")
+        return tkn
         
 
-palavra = 'char'
 
-MainFunctionVerify(palavra)
+count = 0
+arquivo = open("./texto.txt")
+dados = arquivo.read()
+linhas = dados.splitlines()
+identified = 0
+
+file_token = open("./token.txt", "w")
+file_error = open("./error.txt", "w")
+for line in linhas:
+    count = count + 1 # Numerador de linhas
+    token = MainFunctionVerify(line, count)
+  
+    if token == "comment":
+        message = (f"[{count}] COMENTARIO")
+        print(message)
+        file_token.write(message + "\n")
+    elif token == "reserved":
+        message = (f"[{count}] {line.upper()}")
+        print(message)
+        file_token.write(message + "\n")
+    elif token == "identify":
+        identified+=1
+        message = (f"[{count}] IDENTIFICADOR {identified}")
+        print(message)
+        file_token.write(message + "\n")
+    elif token == "real":
+        message = (f"[{count}] {line.upper()}")
+        print(message)
+        file_token.write(message + "\n")
+    elif token == "int":
+        message = (f"[{count}] {line.upper()}")
+        print(message)
+        file_token.write(message + "\n")
+    else:
+        message = (f"[{count}] ({line})")
+        print(message)
+        file_error.write(message + "\n")
 
 # VerifyHaveSpace(palavra)
 # VerifyComment(palavra)
