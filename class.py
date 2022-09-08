@@ -1,6 +1,10 @@
 #encoding: utf-8
 
 
+from asyncio.windows_events import NULL
+from contextlib import nullcontext
+
+
 def VerifyHaveSpace(word): 
     if ' ' in word:
         # print("A palavra possui espaco")
@@ -11,6 +15,8 @@ def VerifyHaveSpace(word):
 
 
 def VerifyComment(word): #Corrigir: Se o primeiro caracter da string for um espaço em branco e os próximos forem // considera-se não comentario
+    if word == '':
+        return bool(0)
     first = word[0]
     if first == '/':
         if word[1] == first:
@@ -62,11 +68,14 @@ def VerifyNumFloat(word):
  
 
 def VerifyIdentifier(word):
+    if word == '':
+        return bool(0)
     first = word[0]
     numbers = ['0','1','2','3','4','5','6','7','8','9'] 
-    special_characters = [".",'"',"'",'!','@', '#', '$', '%', '¨', '&', '*', "(", ')', '[', ']', '{','}', '+', '-', '=','´', '`', ',','<', '>', ';', ':','/','?', '^', '~', "|", ]
+    # special_characters = [".",'"',"'",'!','@', '#', '$', '%', '¨', '&', '*', "(", ')', '[', ']', '{','}', '+', '-', '=','´', '`', ',','<', '>', ';', ':','/','?', '^', '~', "|", ]
+    accepted_characters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9']
     for i in word:
-        if i in special_characters:
+        if i not in accepted_characters:
             return bool(0)
     if first in numbers:
         # print(f"{word} não é um identificador valido 88")
@@ -138,7 +147,7 @@ def MainFunctionVerify(word):
 
 
 line_count = 0 # Numerador da linhas
-arquivo = open("./texto.txt", 'r', encoding='utf-8')
+arquivo = open("./texTo.txt", 'r', encoding='utf-8')
 dados = arquivo.read()
 linhas = dados.splitlines()
 identified = 0
