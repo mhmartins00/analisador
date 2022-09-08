@@ -1,19 +1,4 @@
-
-
-# Identificadores iniciados por letras e podem continur com números ou letras
-# Constantes numéricas inteiras "int" até 99
-# Constantes numéricas reais "float" até 99.99, máximo de .99 duas casas decimais
-# Comentários de linha, iniciam com "//"
-# Palavras reservadas "int, double, float, real, break, case, char, const, continue"
-
-# Ler arquivo-texto e reconhecer o token
-
-# Exibir os tokens de entrada e a linha que aparece, tabela léxica
-# Exibir tabela de símbolos
-# Lista das linhas onde os erros aparecem, junto com as palavras
-
-
-from xml.dom.minidom import Identified
+#encoding: utf-8
 
 
 def VerifyHaveSpace(word): 
@@ -130,7 +115,7 @@ def VerifyIsNumOrStr(word):
             return type(word)
 
 
-def MainFunctionVerify(word, num):
+def MainFunctionVerify(word):
     if VerifyComment(word):
         tkn = ("comment")
         return tkn
@@ -152,41 +137,69 @@ def MainFunctionVerify(word, num):
         
 
 
-count = 0
-arquivo = open("./texto.txt")
+line_count = 0 # Numerador da linhas
+arquivo = open("./texto.txt", 'r', encoding='utf-8')
 dados = arquivo.read()
 linhas = dados.splitlines()
 identified = 0
 
-file_token = open("./token.txt", "w")
-file_error = open("./error.txt", "w")
-for line in linhas:
-    count = count + 1 # Numerador de linhas
-    token = MainFunctionVerify(line, count)
-  
+file_token = open("./token.txt", "w", encoding='utf-8')
+file_error = open("./error.txt", "w", encoding='utf-8')
+file_symbol = open("./symbol.txt", "w", encoding='utf-8')
+
+token_list = []
+for word in linhas:
+    line_count = line_count + 1 
+    token = MainFunctionVerify(word)
     if token == "comment":
-        message = (f"[{count}] COMENTARIO")
+        message = (f"[{line_count}] COMENTARIO")
         print(message)
         file_token.write(message + "\n")
     elif token == "reserved":
-        message = (f"[{count}] {line.upper()}")
+        message = (f"[{line_count}] {word.upper()}")
         print(message)
         file_token.write(message + "\n")
     elif token == "identify":
-        identified+=1
-        message = (f"[{count}] IDENTIFICADOR {identified}")
-        print(message)
-        file_token.write(message + "\n")
+        if word in token_list:
+            message = (f"[{line_count}] IDENTIFICADOR {token_list.index(word)+1}")
+            print(message)
+            file_token.write(message + "\n")
+        else:
+            identified+=1
+            message = (f"[{line_count}] IDENTIFICADOR {identified}")
+            print(message)
+            token_list.append(word)
+            file_token.write(message + "\n")
+            symbol_message = (f"{token_list.index(word)+1} - {word}")
+            file_symbol.write(symbol_message + "\n")
     elif token == "real":
-        message = (f"[{count}] {line.upper()}")
-        print(message)
-        file_token.write(message + "\n")
+        if word in token_list:
+            message = (f"[{line_count}] NUMERO REAL {token_list.index(word)+1}")
+            print(message)
+            file_token.write(message + "\n")
+        else:
+            identified+=1
+            message = (f"[{line_count}] NUMERO REAL {identified}")
+            print(message)
+            token_list.append(word)
+            file_token.write(message + "\n")
+            symbol_message = (f"{token_list.index(word)+1} - {word}")
+            file_symbol.write(symbol_message + "\n")
     elif token == "int":
-        message = (f"[{count}] {line.upper()}")
-        print(message)
-        file_token.write(message + "\n")
+        if word in token_list:
+            message = (f"[{line_count}] NUMERO INTEIRO {token_list.index(word)+1}")
+            print(message)
+            file_token.write(message + "\n")
+        else:
+            identified+=1
+            message = (f"[{line_count}] NUMERO INTEIRO {identified}")
+            print(message)
+            token_list.append(word)
+            file_token.write(message + "\n")
+            symbol_message = (f"{token_list.index(word)+1} - {word}")
+            file_symbol.write(symbol_message + "\n")
     else:
-        message = (f"[{count}] ({line})")
+        message = (f"[{line_count}] ({word})")
         print(message)
         file_error.write(message + "\n")
 
