@@ -1,18 +1,14 @@
 a
 a
+bb
+b
+b
 int
 asd
 as123
 99
 99.
 99.99
-float
-real a
-real
-double _c
-double
- as_asd
-asd
 // Joao da Silva
 -- Teste
 99.99
@@ -23,9 +19,31 @@ mm.ll
 jagunco
 murillo_douglas
 maça
+float
+real a
+real
+double _c
+double
+ as_asd
+asd
+
 limão
 limão.
 99.999999999
 999
 murilin
 9.99
+//teste murillo
+as123a
+a
+a
+// queró só ver
+
+Issoéumavariavel
+asd
+float
+b
+b
+b
+bb
+a

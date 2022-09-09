@@ -1,4 +1,2 @@
-error.txt
-token.txt
-backup.py
-symbol.txt
+
+__pycache__/*

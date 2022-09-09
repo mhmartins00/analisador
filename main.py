@@ -1,17 +1,19 @@
-from functions import *
+from main_functions import *
 
 line_count = 0 # Numerador da linhas
-arquivo = open("./texTo.txt", 'r', encoding='utf-8')
-dados = arquivo.read()
-linhas = dados.splitlines()
-identified = 0
+identified = 0 # Identificador dos tokens
 
-file_token = open("./token.txt", "w", encoding='utf-8')
-file_error = open("./error.txt", "w", encoding='utf-8')
-file_symbol = open("./symbol.txt", "w", encoding='utf-8')
-
+file = open("./input/texto.txt", 'r', encoding='utf-8')
+data = file.read()
+lines = data.splitlines()
 token_list = []
-for word in linhas:
+
+file_token = open("./output/token.txt", "w", encoding='utf-8')
+file_error = open("./output//error.txt", "w", encoding='utf-8')
+file_symbol = open("./output//symbol.txt", "w", encoding='utf-8')
+
+
+for word in lines:
     line_count = line_count + 1 
     token = MainFunctionVerify(word)
     if token == "comment":
