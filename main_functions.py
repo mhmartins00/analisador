@@ -76,9 +76,18 @@ def VerifyIsNumInt(word): #Função para verificar se o conteúdo é um inteiro
     else:
         return bool(0)
 
+def VerifyEmptyWord(word): #Funcao para verificar se é palavra vazia
+    if word == '':
+        return bool(1)
+    else:
+        return bool(0)
+
 
 def MainFunctionVerify(word): #Função principal onde passamos todas funções criadas anteriormente, e a que for TRUE retornará o que é o conteúdo
-    if VerifyComment(word):
+    if VerifyEmptyWord(word):
+        token = "empty"
+        return token
+    elif VerifyComment(word):
         token = "comment"
         return token
     elif VerifyReservedWord(word):

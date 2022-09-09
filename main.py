@@ -63,6 +63,10 @@ for word in lines:
             file_token.write(message + "\n")
             symbol_message = (f"{token_list.index(word)+1} - {word}")
             file_symbol.write(symbol_message + "\n")
+    elif token == "empty":
+        message = (f"[{line_count}] PALAVRA VAZIA")
+        print(message)
+        file_token.write(message + "\n")
     else:
         message = (f"[{line_count}] ({word})")
         print(message)
