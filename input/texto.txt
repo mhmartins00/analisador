@@ -47,3 +47,13 @@ b
 b
 bb
 a
+00.00
+0.00
+50,25
+@
+*
+int
+float
+double
+ 
+douglas ulbra

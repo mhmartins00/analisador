@@ -27,7 +27,7 @@ def VerifyNumFloat(word): #Funcao para verificar se o conteúdo é um numero rea
     if size <= 5:
         position = word.find('.') # Funcao find retorna a posicao de um caracter na string
         tmp = len(word[position:position+3])
-        if tmp < 3:
+        if tmp <= 2:
             return bool(0)
         else:
             if VerifyIsNumOrStr(word) == float: #if para verificar se o conteudo pode ser transformado em um float
@@ -45,7 +45,7 @@ def VerifyNumFloat(word): #Funcao para verificar se o conteúdo é um numero rea
 def VerifyIdentifier(word): #Funcao para verificar se o conteudo é um identificador
     if VerifyEmptyLine(word):
         return bool(0)
-    first = word[0] # Pego a primeira letra da palavra
+    first = word[0] # Pega a primeira letra da palavra
     numbers = ['0','1','2','3','4','5','6','7','8','9'] 
     # special_characters = [".",'"',"'",'!','@', '#', '$', '%', '¨', '&', '*', "(", ')', '[', ']', '{','}', '+', '-', '=','´', '`', ',','<', '>', ';', ':','/','?', '^', '~', "|", ]
     accepted_characters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9']
@@ -55,14 +55,14 @@ def VerifyIdentifier(word): #Funcao para verificar se o conteudo é um identific
     if first in numbers: # IF para validar se o primeiro caracter é um número
         return bool(0)
     else:
-        if VerifyReservedWord(word) == False and VerifyHaveSpace(word) == False: # IF para validar se a palavara não é um identificador ou se tem espaço
+        if not VerifyReservedWord(word) and not VerifyHaveSpace(word): # IF para validar se a palavara não é um identificador ou se tem espaço
             return bool(1)
         else:
             return bool(0)
 
 
 def VerifyIsNumInt(word): #Função para verificar se o conteúdo é um inteiro
-    limit=99
+    limit = 99
     size = len(word)
     if VerifyIsNumOrStr(word) == int:
         word = int(word)
